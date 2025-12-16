@@ -1,0 +1,9 @@
+﻿fastapi
+uvicorn[standard]
+SQLAlchemy>=1.4
+asyncpg
+python-dotenv
+pydantic>=2.0
+pydantic-settings
+requests
+python-jose
