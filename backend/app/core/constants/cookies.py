@@ -1,0 +1,7 @@
+﻿REFRESH = "refresh_token"
+ACCESS = "access_token"
+ID_TOKEN = "id_token"
+EXPIRES_IN = "expires_in"
+TOKEN_TYPE = "token_type"
+AUTHORIZATION = "authorization_code"
+CSRF = "csrf_token"

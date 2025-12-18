@@ -1,0 +1,1 @@
+﻿CSRF = "X-CSRF-TOKEN"

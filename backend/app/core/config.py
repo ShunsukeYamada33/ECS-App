@@ -1,0 +1,8 @@
+﻿import os
+
+COGNITO_DOMAIN = os.getenv("COGNITO_DOMAIN")
+CLIENT_ID = os.getenv("CLIENT_ID")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+COGNITO_REGION = os.getenv("COGNITO_REGION")
+USER_POOL_ID = os.getenv("COGNITO_USER_POOL_ID")
+APP_CLIENT_ID = os.getenv("COGNITO_APP_CLIENT_ID")

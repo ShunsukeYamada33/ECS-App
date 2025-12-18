@@ -7,6 +7,7 @@ export const COGNITO_CLIENT_ID =
 export const REDIRECT_URI =
     import.meta.env.VITE_REDIRECT_URI;
 
+
 /**
  * 保存されたリフレッシュトークンを使用してアクセストークンを更新
  * ローカルストレージから`refresh_token`を取得し、
@@ -16,13 +17,13 @@ export const REDIRECT_URI =
  * @return {Promise<boolean>} トークンの更新が成功した場合に `true` を返し、失敗した場合に `false`
  */
 export async function refreshAccessToken(): Promise<boolean> {
-    const refreshToken = localStorage.getItem("refresh_token");
-    if (!refreshToken) return false;
-
+    const csrfToken = getCookie("csrf_token");
     const res = await fetch("/api/auth/refresh", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({refresh_token: refreshToken}),
+        credentials: "include",
+        headers: {
+            "X-CSRF-Token": csrfToken ?? "",
+        },
     });
 
     if (!res.ok) return false;
@@ -51,4 +52,11 @@ export async function exchangeCode(code: string) {
     }
 
     return res.json();
+}
+
+function getCookie(name: string): string | null {
+    const match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+    );
+    return match ? decodeURIComponent(match[2]) : null;
 }
