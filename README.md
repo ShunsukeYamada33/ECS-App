@@ -92,6 +92,7 @@ docker-compose up --build
 ```
 
 Frontend: http://localhost:5173
+
 Backend: http://localhost:8000
 
 
@@ -100,6 +101,9 @@ Backend: http://localhost:8000
 ## AWS デプロイ
 
 ECR に Docker イメージを push
+
 ECS (Fargate) で起動
+
 GitHub Actions により自動化
+
 
