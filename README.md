@@ -89,10 +89,11 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 
 ```bash
 docker-compose up --build
-
-Frontend:http://localhost:5173
-Backend://localhost:8000
 ```
+
+Frontend: http://localhost:5173
+Backend: http://localhost:8000
+
 
 ---
 
