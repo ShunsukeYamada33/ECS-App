@@ -29,6 +29,7 @@ jobs:
 
       # ④ Docker build & push
       - name: Build and push Docker image
+        working-directory: backend
         run: |
           docker build -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest \
