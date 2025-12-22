@@ -20,7 +20,7 @@ def _fetch_jwks() -> Dict[str, Any]:
 
 def get_jwks(force_refresh: bool = False) -> Dict[str, Any]:
     """
-    JWKS をキャッシュ付きで取得する
+    JWKS(JSON Web Key Set) をキャッシュ付きで取得する
     """
     global _JWKS_CACHE, _JWKS_EXPIRES_AT
 
