@@ -54,17 +54,6 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 
 ---
 
-## システム構成
-[ Browser ]
-↓
-[ React SPA (Vite) ]
-↓
-[ FastAPI API ]
-↓
-[ AWS Cognito ]
-
----
-
 ## 認証フロー
 
 1. フロントエンドから Cognito Hosted UI にリダイレクト
@@ -103,6 +92,7 @@ docker-compose up --build
 
 Frontend:http://localhost:5173
 Backend://localhost:8000
+```
 
 ---
 
