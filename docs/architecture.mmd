@@ -1,0 +1,19 @@
+graph TB
+    subgraph GitHub
+        GA[GitHub Actions]
+    end
+
+    subgraph AWS
+        ECR[Amazon ECR]
+        ECS[Amazon ECS Fargate]
+        ALB[Application Load Balancer]
+        COG[AWS Cognito]
+    end
+
+    GA -- 1. Build & Push Image --> ECR
+    GA -- 2. Update Service --> ECS
+    ECR -- Pull Image --> ECS
+    
+    User((ユーザー)) -- HTTPS --> ALB
+    ALB -- Reverse Proxy --> ECS
+    ECS -- Validate Token --> COG

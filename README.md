@@ -11,6 +11,11 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 
 ---
 
+## 開発背景
+
+セキュアな認証基盤（OAuth 2.0/PKCE）をモダンなクラウド環境でフルスタックに構築の学習
+実務に近いCI/CD環境を個人開発での際限
+
 ## 主な機能
 
 - AWS Cognito を利用したユーザー認証
@@ -26,6 +31,7 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 ## 技術スタック
 
 ### フロントエンド
+
 - React
 - TypeScript
 - Vite
@@ -33,12 +39,14 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 - Fetch API
 
 ### バックエンド
+
 - FastAPI
 - Python 3.11
 - python-jose（JWT 検証）
 - requests
 
 ### 認証・セキュリティ
+
 - AWS Cognito
 - OAuth 2.0 Authorization Code Flow + PKCE
 - JWT（RS256）
@@ -46,6 +54,7 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 - CSRF 対策（SameSite / Cookie 利用）
 
 ### インフラ・CI/CD
+
 - Docker
 - Amazon ECR
 - Amazon ECS (Fargate)
@@ -82,6 +91,61 @@ FastAPI をバックエンド、React（Vite + TypeScript）をフロントエ�
 - main ブランチ push で自動実行
 - Docker イメージを ECR に push
 - ECS サービスを自動更新
+
+---
+
+## システム構成図
+
+### 1. 認証・リクエストフロー
+
+ユーザーがログインしてからAPIを呼び出すまでの流れを可視化したシーケンス図
+
+```mermaid
+sequenceDiagram
+    participant User as ユーザー
+    participant Frontend as React (Vite)
+    participant Cognito as AWS Cognito
+    participant Backend as FastAPI (ECS)
+
+    User->>Frontend: ログインボタン押下
+    Frontend->>Cognito: Hosted UI へリダイレクト
+    User->>Cognito: ログイン情報入力
+    Cognito-->>Frontend: code を返却 (Callback)
+    Frontend->>Backend: code を送信 (POST /callback)
+    Backend->>Cognito: code を token と交換
+    Cognito-->>Backend: access_token / refresh_token
+    Backend-->>Frontend: httpOnly Cookie (refresh) / Body (access)
+    
+    Note over Frontend, Backend: 認証済みリクエスト
+    Frontend->>Backend: APIリクエスト (Authorization: Bearer <access_token>)
+    Backend-->>Frontend: APIレスポンス
+```
+
+### 2. インフラ・CI/CD構成
+
+GitHub ActionsからAWSへのデプロイと、実行環境の繋がりを示した構成図
+
+```mermaid
+graph TB
+    subgraph GitHub
+        GA[GitHub Actions]
+    end
+
+    subgraph AWS
+        ECR[Amazon ECR]
+        ECS[Amazon ECS Fargate]
+        ALB[Application Load Balancer]
+        COG[AWS Cognito]
+    end
+
+    GA -- 1. Build & Push Image --> ECR
+    GA -- 2. Update Service --> ECS
+    ECR -- Pull Image --> ECS
+    
+    User((ユーザー)) -- HTTPS --> ALB
+    ALB -- Reverse Proxy --> ECS
+    ECS -- Validate Token --> COG
+```
 
 ---
 

@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant User as ユーザー
+    participant Frontend as React (Vite)
+    participant Cognito as AWS Cognito
+    participant Backend as FastAPI (ECS)
+
+    User->>Frontend: ログインボタン押下
+    Frontend->>Cognito: Hosted UI へリダイレクト
+    User->>Cognito: ログイン情報入力
+    Cognito-->>Frontend: code を返却 (Callback)
+    Frontend->>Backend: code を送信 (POST /callback)
+    Backend->>Cognito: code を token と交換
+    Cognito-->>Backend: access_token / refresh_token
+    Backend-->>Frontend: httpOnly Cookie (refresh) / Body (access)
+    
+    Note over Frontend, Backend: 認証済みリクエスト
+    Frontend->>Backend: APIリクエスト (Authorization: Bearer <access_token>)
+    Backend-->>Frontend: APIレスポンス
